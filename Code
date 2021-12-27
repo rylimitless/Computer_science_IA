@@ -1,0 +1,222 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
+#include "login.h"
+#define monthly_price 4000
+
+int top=-1;
+int student_count =0;
+// Function declarations.
+
+void view_data();
+void add_data();
+int search(char[]);
+void view_search(int);
+void delete_data(char []);
+void query();
+void return_menu();
+
+typedef struct{
+    char student_name[50];
+    int student_age;
+    char student_type;
+    char subject[50];
+
+}Student;
+
+typedef struct{
+    int number_of_students;
+    int number_of_sessions;
+    float fees_payable;
+}FEES;
+
+Student student[10];
+FEES fees;
+
+void menu()
+{
+    char password[50],name[50];
+    int option;
+
+    system("cls");
+
+    puts("\t1-view Student data.");
+    puts("\t2-Add Student data.");
+    puts("\t3-Delete Student data.");
+    puts("\t4-Update Register.");
+    puts("\t5-Update Student data.");
+    puts("\t6-Exit.");
+    printf("Please enter an option: ");
+
+    scanf("%d", &option);
+
+    switch (option)
+    {
+        case 1:
+          system("cls");
+          view_data();
+          query();
+          break;
+        case 2:
+          printf("Please enter student name: ");
+          scanf("%s",name);
+          break;
+        case 3:
+          /*if(top==-1)
+          {
+            printf("Unable to delete");
+          }
+          else {
+            checker=search()
+          }*/
+
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+        case 6:
+          printf("Thank you for using this software!\n");
+          exit(0);
+        default:
+          printf("Invalid Option , please try again.\n");
+          system("pause");
+          menu();
+    }
+}
+
+void return_menu()
+{
+    system("cls");
+    menu();
+}
+
+void query(){
+    char choice;
+    printf("Would you like other stuff? (Y/n)");
+    choice = toupper(choice);
+    if (choice =='Y') return_menu();
+    else exit(0);
+
+}
+
+int main()
+{
+  menu();
+    //add_data();
+    //view_data();
+    //system("pause");
+    //system("cls");
+   // int s =search("Ry");
+    //view_search(s);
+    //system("pause");
+    return 0;
+}
+
+void add_data()
+{
+
+   int choice , option, count ;
+   printf("Please enter the number of new students: ");
+   scanf("%d",&choice);
+
+   for(int i=1; i<=choice; i++)
+   {
+        top=top+1;
+        student_count = top+1;
+
+        printf("\nEnter student name: ");
+        scanf("%s",&student[top].student_name);
+        printf("\nPlease enter student's age: ");
+        scanf("%d",&student[top].student_age);
+        printf("\nPlease select student type: 1-Group Based , 2-Single: ");
+        scanf("%d",&count);
+
+        switch(count)
+        {
+            case 1:
+                student[top].student_type='S';
+                break;
+            case 2:
+                student[top].student_type='G';
+                break;
+        }
+
+        //scanf("%c",&student[top].student_type);
+        printf("\nSelect Subject:   1-Math , 2-English\n");
+        scanf("%d",&option);
+        switch(option)
+        {
+            case 1:
+                strcpy(student[top].subject,"Mathemaitcs");
+                break;
+            case 2:
+                strcpy(student[top].subject,"English");
+                break;
+        }
+        system("cls");
+   }
+
+}
+
+//Function to add data
+
+void view_data()
+{
+    for(int h=0;h<=top;h++)
+    {
+        printf("Student Name: %s\n",student[h].student_name);
+        printf("Age: %d\n",student[h].student_age);
+        if(student[h].student_type =='S') printf("Student Type: Single\n");
+        else printf("Student Type: Group based\n");
+        printf("Subject: %s\n",student[h].subject);
+        printf("\n\n");
+
+    }
+
+}
+
+int search(char key[])
+{
+    for(int h=0;h<(strlen(key));h++) key[h] = toupper(key[h]);
+    for(int h=0;h<=top;h++) {
+        if((strcmp(key,student[h].student_name))) continue;
+        else return h;
+    }
+    return -1;
+}
+
+void view_search(int key){
+
+        if(key ==-1){
+            printf("Student name not found");
+        }else{
+            printf("Student Name: %s\n",student[key].student_name);
+            printf("Age: %d\n",student[key].student_age);
+            if(student[key].student_type =='S') printf("Student Type: Single\n");
+            else printf("Student Type: Group based\n");
+            printf("Subject: %s\n",student[key].subject);
+            printf("\n\n");
+        }
+}
+
+void delete_data(char _name[])
+{
+    int hold = search(_name);
+    if(hold != -1)
+    {
+        for(int h=hold; h<=top;h++)
+        {
+            strcpy(student[h].student_name,student[h+1].student_name);
+            student[h].student_age = student[h+1].student_age;
+            student[h].student_type = student[h+1].student_type;
+            strcpy(student[h].subject,student[h+1].subject);
+
+        }
+       student_count=top;
+       top=top-1;
+
+    }
+}
